@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>심플 계산기</title>
+    <style>
+        /* 깔끔한 화면 중앙 정렬을 위한 스타일 */
+        body {
+            font-family: 'Malgun Gothic', sans-serif;
+            background-color: #f5f6fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        /* 계산기 카드 스타일 */
+        .calculator-box {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 320px;
+        }
+
+        h2 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+
+        /* 입력창 스타일 */
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        /* 버튼 그룹 스타일 */
+        .btn-group {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0;
+        }
+
+        button {
+            width: 48%;
+            padding: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-plus {
+            background-color: #3498db;
+        }
+
+        .btn-plus:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-minus {
+            background-color: #e74c3c;
+        }
+
+        .btn-minus:hover {
+            background-color: #c0392b;
+        }
+
+        /* 결과창 스타일 */
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+            min-height: 27px;
+            /* 결과가 없을 때도 공간 유지 */
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="calculator-box">
+        <h2>심플 계산기</h2>
+        <input type="number" id="num1" placeholder="첫 번째 숫자 입력">
+        <input type="number" id="num2" placeholder="두 번째 숫자 입력">
+
+        <div class="btn-group">
+            <button class="btn-plus" onclick="calculate('add')">+</button>
+            <button class="btn-minus" onclick="calculate('subtract')">-</button>
+        </div>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function calculate(operation) {
+            // 1. 입력창의 값을 가져와 숫자로 변환합니다.
+            const num1Value = document.getElementById('num1').value;
+            const num2Value = document.getElementById('num2').value;
+            const resultElement = document.getElementById('result');
+
+            // [예외 처리] 숫자가 입력되지 않았을 경우 안내 메시지 출력
+            if (num1Value === '' || num2Value === '') {
+                resultElement.innerText = '두 칸 모두 숫자를 입력해주세요.';
+                resultElement.style.color = '#e74c3c';
+                return;
+            }
+
+            const num1 = Number(num1Value);
+            const num2 = Number(num2Value);
+            resultElement.style.color = '#2c3e50'; // 글자색 초기화
+
+            // 2. 버튼 종류에 따른 연산 및 화면 출력
+            if (operation === 'add') {
+                const sum = num1 + num2;
+                resultElement.innerText = `더하기 결과는 ${sum}입니다.`;
+            } else if (operation === 'subtract') {
+                const difference = num1 - num2;
+                resultElement.innerText = `빼기 결과는 ${difference}입니다.`;
+            }
+        }
+    </script>
+
+</body>
+
+</html>

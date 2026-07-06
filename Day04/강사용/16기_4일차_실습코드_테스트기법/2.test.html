@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>심플 계산기</title>
+    <style>
+        /* 깔끔한 화면 중앙 정렬을 위한 스타일 */
+        body {
+            font-family: 'Malgun Gothic', sans-serif;
+            background-color: #f5f6fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        /* 계산기 카드 스타일 */
+        .calculator-box {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 320px;
+        }
+        h2 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        /* 입력창 스타일 */
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        /* 버튼 그룹 스타일 */
+        .btn-group {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0;
+        }
+        button {
+            width: 48%;
+            padding: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-plus {
+            background-color: #3498db;
+        }
+        .btn-plus:hover {
+            background-color: #2980b9;
+        }
+        .btn-minus {
+            background-color: #e74c3c;
+        }
+        .btn-minus:hover {
+            background-color: #c0392b;
+        }
+        /* 결과창 스타일 */
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+            min-height: 27px; /* 결과가 없을 때도 공간 유지 */
+        }
+    </style>
+
+    <style>
+        body {
+            flex-direction: column !important; /* 계산기와 테스트 창을 위아래로 배치 */
+            height: auto !important;          /* 컨텐츠 길이에 맞게 화면 높이 조절 */
+            padding: 40px 0;
+        }
+        /* 테스트 결과 박스 스타일 */
+        .test-box {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 320px;
+            margin-top: 25px;
+            box-sizing: border-box;
+        }
+        .test-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 12px;
+            border-bottom: 2px solid #7f8c8d;
+            padding-bottom: 5px;
+        }
+        .test-item {
+            font-size: 14px;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+        .test-success {
+            color: #2ecc71; /* 초록색 */
+            font-weight: bold;
+        }
+        .test-fail {
+            color: #e74c3c; /* 빨간색 */
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="calculator-box">
+    <h2>심플 계산기</h2>
+    <input type="number" id="num1" placeholder="첫 번째 숫자 입력">
+    <input type="number" id="num2" placeholder="두 번째 숫자 입력">
+    
+    <div class="btn-group">
+        <button class="btn-plus" onclick="calculate('add')">+</button>
+        <button class="btn-minus" onclick="calculate('subtract')">-</button>
+    </div>
+    
+    <div id="result"></div>
+</div>
+
+<script>
+    function calculate(operation) {
+        // 1. 입력창의 값을 가져와 숫자로 변환합니다.
+        const num1Value = document.getElementById('num1').value;
+        const num2Value = document.getElementById('num2').value;
+        const resultElement = document.getElementById('result');
+        
+        // [예외 처리] 숫자가 입력되지 않았을 경우 안내 메시지 출력
+        if (num1Value === '' || num2Value === '') {
+            resultElement.innerText = '두 칸 모두 숫자를 입력해주세요.';
+            resultElement.style.color = '#e74c3c';
+            return;
+        }
+        
+        const num1 = Number(num1Value);
+        const num2 = Number(num2Value);
+        resultElement.style.color = '#2c3e50'; // 글자색 초기화
+        
+        // 2. 버튼 종류에 따른 연산 및 화면 출력
+        if (operation === 'add') {
+            const sum = num1 + num2;
+            resultElement.innerText = `더하기 결과는 ${sum}입니다.`;
+        } else if (operation === 'subtract') {
+            const difference = num1 - num2;
+            resultElement.innerText = `빼기 결과는 ${difference}입니다.`;
+        }
+    }
+</script>
+
+
+<div class="test-box">
+    <div class="test-title">🧪 유닛 테스트 결과 리포트</div>
+    <div id="test-report"></div>
+</div>
+
+<script>
+    // 테스트 결과를 화면에 보기 좋게 그려주는 함수
+    function appendTestResult(title, isPassed, detailMessage) {
+        const reportContainer = document.getElementById('test-report');
+        const item = document.createElement('div');
+        item.className = 'test-item';
+        
+        if (isPassed) {
+            item.innerHTML = `✅ <span class="test-success">[PASS]</span> <strong>${title}</strong><br>측정 결과: ${detailMessage}`;
+        } else {
+            item.innerHTML = `❌ <span class="test-fail">[FAIL]</span> <strong>${title}</strong><br>원인: ${detailMessage}`;
+        }
+        
+        reportContainer.appendChild(item);
+    }
+
+    // 실제 테스트를 수행하는 함수
+    function runCalculatorTests() {
+        // 기존 계산기 요소들을 가져옵니다.
+        const input1 = document.getElementById('num1');
+        const input2 = document.getElementById('num2');
+        const resultBox = document.getElementById('result');
+
+        // --------------------------------------------------
+        // [테스트 1] 덧셈 기능 테스트 (예: 5 + 3 = 8)
+        // --------------------------------------------------
+        // 가상의 입력값 설정
+        input1.value = '5';
+        input2.value = '3';
+        
+        // 기존의 계산 함수를 직접 실행 시킵니다. (사용자가 덧셈 버튼을 누른 효과)
+        calculate('add'); 
+        
+        // 기대하는 최종 출력 문장
+        const expectedAddText = '더하기 결과는 8입니다.';
+        
+        // 화면에 찍힌 결과가 기대값과 일치하는지 비교 검증
+        if (resultBox.innerText === expectedAddText) {
+            appendTestResult('덧셈 기능 검증 (5 + 3)', true, `"${resultBox.innerText}" 정상 출력됨`);
+        } else {
+            appendTestResult('덧셈 기능 검증 (5 + 3)', false, `기대값은 "${expectedAddText}" 이지만 실제로는 "${resultBox.innerText}" 가 출력됨`);
+        }
+
+        // --------------------------------------------------
+        // [테스트 2] 뺄셈 기능 테스트 (예: 10 - 4 = 6)
+        // --------------------------------------------------
+        // 가상의 입력값 설정
+        input1.value = '10';
+        input2.value = '4';
+        
+        // 기존의 계산 함수를 실행 시킵니다. (사용자가 뺄셈 버튼을 누른 효과)
+        calculate('subtract'); 
+        
+        // 기대하는 최종 출력 문장
+        const expectedSubText = '빼기 결과는 6입니다.';
+        
+        // 화면에 찍힌 결과가 기대값과 일치하는지 비교 검증
+        if (resultBox.innerText === expectedSubText) {
+            appendTestResult('뺄셈 기능 검증 (10 - 4)', true, `"${resultBox.innerText}" 정상 출력됨`);
+        } else {
+            appendTestResult('뺄셈 기능 검증 (10 - 4)', false, `기대값은 "${expectedSubText}" 이지만 실제로는 "${resultBox.innerText}" 가 출력됨`);
+        }
+
+        // --------------------------------------------------
+        // [테스트 종료 후 복원] 
+        // 테스트가 끝난 후 사용자가 직접 계산기를 쓸 수 있도록 깔끔하게 비워줍니다.
+        // --------------------------------------------------
+        input1.value = ''; 
+        input2.value = '';
+        resultBox.innerText = '';
+    }
+
+    // 웹 페이지가 브라우저에 켜지는 순간 자동으로 테스트 코드가 실행됩니다.
+    window.addEventListener('DOMContentLoaded', runCalculatorTests);
+</script>
+
+</body>
+</html>
